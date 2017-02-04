@@ -1,0 +1,80 @@
+﻿@model Instrumentos.Models.Instrumento
+@{
+    ViewBag.Title = "Cadastrar";
+}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input").blur(function(){
+     if($(this).val() == "")
+         {
+             $(this).css({"border-color" : "#F00", "padding": "2px"});
+         }
+    });
+})
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input").blur(function(){
+     if($(this).val() == "")
+         {
+             $(this).css({"border" : "1px solid #F00", "padding": "2px"});
+         }
+    });
+    $("#botao").click(function(){
+     var cont = 0;
+     $("#form input").each(function(){
+         if($(this).val() == "")
+             {
+                 $(this).css({"border" : "1px solid #F00", "padding": "2px"});
+                 cont++;
+             }
+        });
+     if(cont == 0)
+         {
+             $("#form").submit();
+         }
+    });
+});
+</script>
+<h2>Cadastro de Instrumentos</h2>
+@using (Html.BeginForm())
+{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["msg"]
+        </div>
+    }
+    @Html.ValidationSummary()
+    <form id="form" name="form">
+        <div class="form-group">
+            @Html.LabelFor(c => c.Descricao)
+            @Html.TextBoxFor(c => c.Descricao, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Descricao)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.Tipo)
+            @Html.DropDownListFor(c => c.TipoId,
+                ViewBag.tipos as SelectList, "Selecione",
+                new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.AnoFab)
+            @Html.TextBoxFor(c => c.AnoFab, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.AnoFab)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Valor)
+            @Html.TextBoxFor(c => c.Valor, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.AnoFab)
+        </div>
+        <div class="form-group">
+            <input type="submit" id="botao" value="Salvar" class="btn btn-primary" />
+        </div>
+    </form>
+}
+
+

@@ -1,0 +1,88 @@
+﻿@model Instrumentos.Models.Instrumento
+@{
+    ViewBag.Title = "Cadastrar";
+}
+
+<script src="~/scripts/jquery-1.10.2.min.js"></script>
+<script src="~/scripts/jquery.maskMoney.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("input").blur(function(){
+     if($(this).val() == "")
+         {
+             $(this).css({"border-color" : "#F00", "padding": "2px"});
+         }
+    });
+})
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    
+    $("#botao").click(function(){
+     var cont = 0;
+     $("#form input").each(function(){
+         if($(this).val() == "")
+         {
+             $(this).css({"border-color" : "#F00", "padding": "2px"});
+                  cont++;
+             }
+        });
+     if(cont == 0)
+         {
+         $("#form").submit();
+     } else
+     {
+         alert("preencher todos os campos!")
+     }
+    });
+});
+</script>
+
+<script>
+    $(function () {
+        $("#Valor").maskMoney();
+    });
+</script>
+
+<h2>Cadastro de Instrumentos</h2>
+@using (Html.BeginForm())
+{
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["msg"]
+        </div>
+    }
+}
+<form action="/Instrumento/Cadastrar" method="post"></form>
+<form id="form" name="form" method="post">
+    <div class="form-group">
+        <label for="Descricao">Descrição</label>
+        <input class="form-control" data-val="true" data-val-length="Máximo de 150" data-val-length-max="150" data-val-required="Descrição é obrigatória" id="Descricao" name="Descricao" type="text" value="" />
+    </div>
+    <div class="form-group">
+        <span class="field-validation-valid" data-valmsg-for="Tipo" data-valmsg-replace="true"></span>
+        <label for="Tipo">Tipo</label>
+        @Html.DropDownListFor(c => c.TipoId,
+                ViewBag.tipos as SelectList, "Selecione",
+                new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        
+        <label for="AnoFab">Ano de Fabricação</label>
+        <input class="form-control" maxlength="4" minlength="4" size="4"
+         id="AnoFab" name="AnoFab" pattern="[0-9]" type="number" value="" />
+    </div>
+
+    <div class="form-group">
+        <label for="Valor">Valor R$</label>
+        <input class="form-control"
+               data-val="true" data-val-number="The field Valor R$ must be a number." 
+               data-val-required="O campo Valor R$ é obrigatório." id="Valor" name="Valor" type="text" value="" />
+    </div>
+    <div class="form-group">
+        <input type="submit" id="botao" value="Salvar" class="btn btn-primary" />
+    </div>
+</form>
+
